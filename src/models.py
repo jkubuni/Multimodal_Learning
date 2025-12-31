@@ -118,6 +118,34 @@ class LateFusionModel(nn.Module):
         output = self.classifier(combined)
         return output
 
+class LateFusionModelStrided(nn.Module):
+    """
+    Late Fusion Model with separate Embedders for RGB and LiDAR data.
+    The embeddings are concatenated and passed to a classifier.
+    2 classes: cubes, spheres.
+    Here we use strided convolutions for downsampling in the Embedders.
+    """
+    def __init__(self):
+        super().__init__()
+        # Separate Embedders for RGB (4 channels) and LiDAR (4 channels)
+        self.rgb_Embedder = EmbedderStrided(in_ch=4, out_dim=100)
+        self.lidar_Embedder = EmbedderStrided(in_ch=4, out_dim=100)
+        
+        # Concatenate embeddings (100+100=200) -> Classifier
+        self.classifier = nn.Sequential(
+            nn.Linear(200, 50),
+            nn.ReLU(),
+            nn.Linear(50, 2) # 2 classes: cubes, spheres
+        )
+
+    def forward(self, rgb, lidar):
+        rgb_emb = self.rgb_Embedder(rgb)
+        lidar_emb = self.lidar_Embedder(lidar)
+        
+        combined = torch.cat((rgb_emb, lidar_emb), dim=1)
+        output = self.classifier(combined)
+        return output
+
 class IntermediateFusionModel(nn.Module):
     """
     Intermediate Fusion Model with fusion after 3 convolutional layers for RGB and LiDAR data.
