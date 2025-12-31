@@ -1,0 +1,1 @@
+{'name': 'Strided Conv', 'strategy_id': 'IF-mul-strided-conv', 'model_cls': <class 'src.models.IntermediateFusionModelStrided'>, 'model_kwargs': {'fusion_type': 'multiply'}, 'learning_rate': 0.0001, 'scheduler': 'cosine', 'accuracy': 0.996875}

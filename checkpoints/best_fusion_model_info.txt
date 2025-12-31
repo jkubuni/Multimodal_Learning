@@ -1,0 +1,1 @@
+{'name': 'Late Fusion', 'strategy_id': 'late-fusion', 'model_cls': <class 'src.models.LateFusionModel'>, 'model_kwargs': {}, 'learning_rate': 0.0001, 'scheduler': 'cosine', 'accuracy': 1.0, 'f1_score': 1.0}
